@@ -4,6 +4,11 @@ import {
   loginUser,
   logoutCurrentUser,
   getAllUsers,
+  getCurrentUserProfile,
+  updateCurrentUserProfile,
+  deleteUserById,
+  getUserById,
+  updatetUserById,
 } from '../controllers/userController.js'
 
 import { authenticate, authorizeAdmin } from '../middlewares/authMiddleware.js'
@@ -17,5 +22,17 @@ router
 
 router.post('/auth', loginUser)
 router.post('/logout', logoutCurrentUser)
+
+router
+  .route('/profile')
+  .get(authenticate, getCurrentUserProfile)
+  .put(authenticate, updateCurrentUserProfile)
+
+// Admin Routes
+router
+  .route('/:id')
+  .delete(authenticate, authorizeAdmin, deleteUserById)
+  .get(authenticate, authorizeAdmin, getUserById)
+  .put(authenticate, authorizeAdmin, updatetUserById)
 
 export default router
